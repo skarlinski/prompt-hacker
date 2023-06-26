@@ -31,3 +31,4 @@ export default function handler(req, res) {
         res.json({ prompt: gameLevels[levelNumber].defense });
     }
 }
+export const runtime = 'edge';
