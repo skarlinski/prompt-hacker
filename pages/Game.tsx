@@ -18,6 +18,7 @@ const Game = () => {
     const [loading, setLoading] = useState(false);
     const [tries, setTries] = useState(0);
     const [startTime] = useState(Date.now());
+    const [gameWon, setGameWon] = useState(false);
 
     useEffect(() => {
         axios.get(`/api/levels?level=${level}`)
@@ -32,6 +33,8 @@ const Game = () => {
 
     const handlePrompt = () => {
         setLoading(true);
+        setTries(tries + 1);
+
         axios.get(`/api/prompt?prompt=${userInput}&level=${level}`, )
             .then(response => {
                 setOutput(response?.data?.chatGptResponse);
@@ -45,8 +48,10 @@ const Game = () => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
+        if(password == 'congratulations'){
+            setGameWon(true)
+        }
         setLoading(true);
-        setTries(tries + 1);
         // window.localStorage.setItem('tries', String(tries + 1));
         axios.post(`/api/levels?level=${level}`, { guess: password })
             .then(response => {
@@ -71,7 +76,11 @@ const Game = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800 text-white">
             <h1 className="text-2xl font-mono font-bold mb-4">Happy Hacking</h1>
-
+            <p>Total tries: {tries}</p>
+            {gameWon &&
+                <h1>CONGRATS YOU WON THE GAME</h1>
+            }
+            {! gameWon && (
             <div className="w-full max-w-md p-4 bg-gray-700 rounded shadow">
                 <h2 className="text-xl font-mono font-bold mb-2">Level {level}</h2>
                 <p className="mb-4">{levelData.prompt}</p>
@@ -93,7 +102,7 @@ const Game = () => {
 
                 {message && <div className="p-2 bg-yellow-700 rounded">{message}</div>}
                 {loading && <div className="p-2 bg-blue-200 rounded">Loading...</div>}
-            </div>
+            </div>)}
         </div>
     );
 };
