@@ -4,6 +4,7 @@ export type GameLevel = {
   defense: string;
   verifyPrompt?: string;
   suffix?: string;
+  verifySuffix? : string;
 };
 
 export type GameLevels = {

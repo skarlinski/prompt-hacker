@@ -2,6 +2,7 @@
 // @ts-ignore
 import gameLevels from "@/app/gameLevels";
 
+// @ts-ignore
 export default function handler(req, res) {
     const levelNumber = req.query.level;
     // If the requested level doesn't exist, return a 404 status code and an error message

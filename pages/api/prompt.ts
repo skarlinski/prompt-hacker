@@ -16,23 +16,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'GET') {
 
         const { prompt, level } = req.query
+        const levelNumber = parseInt(level as string, 10);
+        if( ! prompt ){
+            return;
+        }
         // @ts-ignore
-        if (!gameLevels[level]) {
+        if (!gameLevels[levelNumber]) {
             return res.status(404).json({ error: `Level ${level} does not exist` })
         }
 
         try {
-            // @ts-ignore
+
             const gptResponse = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
-                messages: [{ role: "system", content: danPrompt },{ role: "system", content: gameLevels[level].prompt }, { role: "user", content: prompt + gameLevels[level].suffix }],
+                // @ts-ignore
+                messages: [{ role: "system", content: danPrompt },{ role: "system", content: gameLevels[levelNumber].prompt }, { role: "user", content: prompt + gameLevels?.[levelNumber]?.suffix }],
                 temperature: 1
             });
-            if( gameLevels[level].verifyPrompt){
-                console.log(gameLevels[level].verifyPrompt + gptResponse.data.choices[0].message.content.trim() + gameLevels[level].verifySuffix)
+            if( gameLevels[levelNumber].verifyPrompt){
+                console.log(gameLevels[levelNumber].verifyPrompt + gptResponse.data.choices[0].message.content.trim() + gameLevels[levelNumber].verifySuffix)
                 const verifyResponse = await openai.createChatCompletion({
                     model: "gpt-3.5-turbo",
-                    messages: [{ role: "user", content: gameLevels[level].verifyPrompt + gptResponse.data.choices[0].message.content.trim() + gameLevels[level].verifySuffix} ],
+                    messages: [{ role: "user", content: gameLevels[levelNumber].verifyPrompt + gptResponse.data.choices[0].message.content.trim() + gameLevels[levelNumber].verifySuffix} ],
                     temperature: 0.4
                 });
                 return res.status(200).json
