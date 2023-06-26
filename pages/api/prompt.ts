@@ -15,6 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'GET') {
         console.log(JSON.stringify(req))
+        console.log(JSON.stringify(res))
+
         const { prompt, level } = req.query
         const levelNumber = parseInt(level as string, 10);
         if( ! prompt ){
