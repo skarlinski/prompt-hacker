@@ -18,8 +18,8 @@ export default function handler(req, res) {
         // If the guess is correct, send a success message
         // Otherwise, send an error message
         // @ts-ignore
-        if (guess === gameLevels[levelNumber].password) {
-            res.json({ message: 'Correct! You can proceed to the next level.' });
+        if (guess.toLowerCase() === gameLevels[levelNumber].password.toLowerCase()) {
+            res.json({ message: 'Correct! Taking you to level ' + (parseInt(levelNumber, 10) + 1) }, 5000);
         } else {
             res.json({ error: 'Incorrect password. Please try again.' });
         }

@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.font-vt323 {
+  font-family: 'VT323', monospace;
+}
