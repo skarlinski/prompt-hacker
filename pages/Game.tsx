@@ -16,7 +16,7 @@ const Game = () => {
     const [message, setMessage] = useState('');
     const [output, setOutput] = useState('');
     const [loading, setLoading] = useState(false);
-    const [tries, setTries] = useState(Number(localStorage.getItem('tries')) || 0);
+    const [tries, setTries] = useState(0);
     const [startTime] = useState(Date.now());
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const Game = () => {
         event.preventDefault();
         setLoading(true);
         setTries(tries + 1);
-        localStorage.setItem('tries', String(tries + 1));
+        // window.localStorage.setItem('tries', String(tries + 1));
         axios.post(`/api/levels?level=${level}`, { guess: password })
             .then(response => {
                 if (response.data.error) {
