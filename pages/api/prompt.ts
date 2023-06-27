@@ -63,7 +63,7 @@ async function aiFetch(messages, temperature: number) : any{
         'headers': {
             'Content-Type': 'application/json',
             // https://developers.cloudflare.com/workers/platform/environment-variables/#add-secrets-to-your-project
-            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+            'Authorization': `Bearer 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`,
         },
         'body': JSON.stringify({
             'model': 'gpt-3.5-turbo',
