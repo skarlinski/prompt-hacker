@@ -46,8 +46,8 @@ const Game = () => {
             });
     };
 
-    const handlePass = () => {
-
+    const handlePass = (e) => {
+        e.preventDefault();
         if(password == 'congratulations'){
             setGameWon(true)
         }
