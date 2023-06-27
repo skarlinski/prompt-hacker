@@ -53,7 +53,7 @@ const Game = () => {
         }
         setLoading(true);
         // window.localStorage.setItem('tries', String(tries + 1));
-        axios.post(`/api/levels?level=${level}`, { guess: password })
+        axios.get(`/api/levels?level=${level}&guess=${password}`)
             .then(response => {
                 if (response.data.error) {
                     setMessage(response.data.error);

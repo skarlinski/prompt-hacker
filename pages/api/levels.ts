@@ -1,34 +1,34 @@
 
 // @ts-ignore
 import gameLevels from "@/app/gameLevels";
+import { NextResponse } from 'next/server'
 
 // @ts-ignore
-export default function handler(req, res) {
-    const levelNumber = req.query.level;
+export default async function handler(req, res) {
+
     // If the requested level doesn't exist, return a 404 status code and an error message
     // @ts-ignore
-    if (!gameLevels[levelNumber]) {
-        res.status(404).json({ error: `Level ${levelNumber} does not exist` });
-        return;
-    }
 
     // Check if this is a POST request
-    if (req.method === 'POST') {
-        const guess = req.body.guess;
+    const urlParams = new URLSearchParams(new URL(req.url).search)
+    const guess = urlParams.get('guess');
+    const levelNumber = urlParams.get('level');
 
+    if (guess ) {
         // If the guess is correct, send a success message
         // Otherwise, send an error message
         // @ts-ignore
         if (guess.toLowerCase() === gameLevels[levelNumber].password.toLowerCase()) {
-            res.json({ message: 'Correct! Taking you to level ' + (parseInt(levelNumber, 10) + 1) }, 5000);
+            // @ts-ignore
+            return  NextResponse.json({ message: 'Correct! Taking you to level ' + (parseInt(levelNumber, 10) + 1) }, { status: 200 });
         } else {
-            res.json({ error: 'Incorrect password. Please try again.' });
+            // @ts-ignore
+            return  NextResponse.json({ error: 'Incorrect password. Please try again.' }, {status: 400})
         }
     }
-    // Otherwise, assume it's a GET request and send the prompt for the requested level
     else {
         // @ts-ignore
-        res.json({ prompt: gameLevels[levelNumber].defense });
+        return  NextResponse.json({ prompt: gameLevels[levelNumber].defense }, { status: 200 });
     }
 }
 export const runtime = 'edge';
