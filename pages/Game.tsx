@@ -46,17 +46,18 @@ const Game = () => {
             });
     };
 
-    const handleSubmit = (event: FormEvent) => {
-        event.preventDefault();
+    const handlePass = () => {
+
         if(password == 'congratulations'){
             setGameWon(true)
         }
+
         setLoading(true);
         // window.localStorage.setItem('tries', String(tries + 1));
         axios.get(`/api/levels?level=${level}&guess=${password}`)
             .then(response => {
-                if (response.data.error) {
-                    setMessage(response.data.error);
+                if (response.data.error || ! response.data.message) {
+                    setMessage(response.data.error )
                 } else {
                     setMessage(response.data.message);
                     setLevel(level + 1);
@@ -66,6 +67,7 @@ const Game = () => {
             })
             .catch(error => {
                 console.error('Error submitting guess:', error);
+                setMessage("Wrong password" )
                 setLoading(false);
             });
         setPassword('');
@@ -97,7 +99,7 @@ const Game = () => {
                 <div className="mb-4">
                     <label className="block mb-2">Input password here</label>
                     <input type="text" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-2 border border-gray-600 bg-gray-800 text-white rounded" />
-                    <button type="button" className="w-full p-2 mt-4 bg-blue-500 text-white rounded" onClick={handleSubmit} disabled={loading}>Guess Password</button>
+                    <button type="button" className="w-full p-2 mt-4 bg-blue-500 text-white rounded" onClick={(e) => handlePass(e)} disabled={loading}>Guess Password</button>
                 </div>
 
                 {message && <div className="p-2 bg-yellow-700 rounded">{message}</div>}
