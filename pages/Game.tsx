@@ -48,10 +48,14 @@ const Game = () => {
 
     const handlePass = (e) => {
         e.preventDefault();
-        if(password == 'congratulations'){
-            setGameWon(true)
+        if(password === 'congratulations'){
+            setGameWon(true);
+            return;
         }
-
+        if (password.trim() === '') {
+            setMessage('Please enter a password.');
+            return;
+        }
         setLoading(true);
         // window.localStorage.setItem('tries', String(tries + 1));
         axios.get(`/api/levels?level=${level}&guess=${password}`)
@@ -99,7 +103,7 @@ const Game = () => {
                 <div className="mb-4">
                     <label className="block mb-2">Input password here</label>
                     <input type="text" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-2 border border-gray-600 bg-gray-800 text-white rounded" />
-                    <button type="button" className="w-full p-2 mt-4 bg-blue-500 text-white rounded" onClick={(e) => handlePass(e)} disabled={loading}>Guess Password</button>
+                    { ! gameWon && <button type="button" className="w-full p-2 mt-4 bg-blue-500 text-white rounded" onClick={(e) => handlePass(e)} disabled={loading}>Guess Password</button>}
                 </div>
 
                 {message && <div className="p-2 bg-yellow-700 rounded">{message}</div>}

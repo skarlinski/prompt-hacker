@@ -50,6 +50,7 @@ export default async function handler(req: NextApiRequest) {
             return NextResponse.json({ error: 'GPT ERROR' }, { status: 500 })
         }
     }
+    return NextResponse.json({ error: 'Use this api with GET' }, { status: 500 })
     console.error('me')
 
     return NextResponse.json({ error: 'Method not allowed. Please use POST.' }, {status: 400})
