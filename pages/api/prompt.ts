@@ -65,7 +65,7 @@ async function aiFetch(messages, temperature: number) : any{
         'headers': {
             'Content-Type': 'application/json',
 
-            'api-key': process.env.AZURE_API_KEY,
+            'api-key': process.env.AZURE_API_KEY as string,
         },
         'body': JSON.stringify({
             'model': 'gpt-3.5-turbo',
