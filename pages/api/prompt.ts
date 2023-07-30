@@ -58,13 +58,14 @@ export default async function handler(req: NextApiRequest) {
 
 // @ts-ignore
 async function aiFetch(messages, temperature: number) : any{
-    const url = 'https://api.openai.com/v1/chat/completions';
+
+    const url = 'https://wp-psw-dev.openai.azure.com/openai/deployments/psw-gpt-35-turbo/chat/completions?api-version=2023-05-15';
     const requestOptions = {
         'method': 'POST',
         'headers': {
             'Content-Type': 'application/json',
-            // https://developers.cloudflare.com/workers/platform/environment-variables/#add-secrets-to-your-project
-            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+
+            'api-key': process.env.AZURE_API_KEY,
         },
         'body': JSON.stringify({
             'model': 'gpt-3.5-turbo',
